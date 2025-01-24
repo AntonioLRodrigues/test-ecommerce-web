@@ -2,10 +2,15 @@ package metodos;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -68,4 +73,17 @@ public class Metodos {
 			System.out.println(" ------ Causa do erro -----" + e.getCause());
 		}
 	}
+
+    public void esperaPeloElementoEClica(By by, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        try {
+            // Aguarda até o elemento estar visível
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            // Clica no elemento
+            element.click();
+        } catch (Exception e) {
+            System.out.println("Elemento não foi encontrado ou não ficou visível dentro do tempo limite: " + e.getMessage());
+        }
+    }
 }
+

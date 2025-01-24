@@ -6,42 +6,73 @@ import org.junit.Test;
 
 import elementos.elementosHomePage;
 import metodos.Metodos;
+import metodos.metodoLogin;
 
-public class homePageTest extends loginTest {
+public class homePageTest extends metodoLogin {
 
 	Metodos metodos = new Metodos();
 	elementosHomePage el = new elementosHomePage();
-	
+
 	@Before
-	public void abrirNavegador() {
+	public void abrirNavegador()   {
 		metodos.abrirNavegador();
+		loginEfetuadoComSucesso();
 	}
 
 	@After
 	public void fecharNavegador() {
-		// fecharNavegador();
+		metodos.fecharNavegador();
 	}
 
-	//@Test
+	@Test
 	public void testAllItemsMenu() {
-		preencherLoginComDadosValidos();
-		metodos.clicar(el.getButtonMenu());
-		metodos.clicar(el.getAllItems());
+		metodos.esperaPeloElementoEClica(el.getAllItems(), 0);
+		metodos.esperaPeloElementoEClica(el.getButtonMenu(), 1);
 		metodos.validarTexto("Sauce Labs Backpack", el.getValideBackpack());
 	}
+
+	@Test
+	public void testAboutMenu() throws InterruptedException {	
+		metodos.esperaPeloElementoEClica(el.getAllItems(), 0);
+		metodos.esperaPeloElementoEClica(el.getAbout(), 1);
+		metodos.validarTitle("Swag Labs");
+	}
 	
-	//@Test
-	public void testAboutMenu() {
-		preencherLoginComDadosValidos();
-		metodos.clicar(el.getButtonMenu());
-		metodos.clicar(el.getAbout());
-		metodos.validarTitle("Sauce Labs: Cross Browser Testing, Selenium Testing & Mobile Testing");
-}
 	@Test
 	public void testLogout() {
-		preencherLoginComDadosValidos();
-		metodos.clicar(el.getButtonMenu());
-		metodos.clicar(el.getLogout());
+		metodos.esperaPeloElementoEClica(el.getAllItems(), 0);
+		metodos.esperaPeloElementoEClica(el.getLogout(), 1);
 		metodos.validarTitle("Swag Labs");
-}
+	}
+ 
+	@Test
+	public void testFiltroNameAZ() {
+		metodos.clicar(el.getClicarFiltro());
+		metodos.clicar(el.getNameAtoZ());
+		metodos.validarTexto("Sauce Labs Backpack", el.getValidePrimeiroProduto());
+		metodos.validarTexto("Sauce Labs Bike Light", el.getValideSegundoProduto());
+	}
+
+	@Test
+	public void testFiltroNameZA() {
+		metodos.clicar(el.getClicarFiltro());
+		metodos.clicar(el.getNameZtoA());
+		metodos.validarTexto("Test.allTheThings() T-Shirt (Red)", el.getValidePrimeiroProduto());
+		metodos.validarTexto("Sauce Labs Onesie", el.getValideSegundoProduto());
+	}
+
+	@Test
+	public void testFitroPriceLowToHigh() {
+		metodos.clicar(el.getClicarFiltro());
+		metodos.clicar(el.getPriceLowToHigh());
+		metodos.validarTexto("Sauce Labs Onesie", el.getValidePrimeiroProduto());
+		metodos.validarTexto("Sauce Labs Bike Light", el.getValideSegundoProduto());
+	}
+
+	public void testFitroPriceHighToLow() {
+		metodos.clicar(el.getClicarFiltro());
+		metodos.clicar(el.getPriceHighToLow());
+		metodos.validarTexto("Sauce Labs Fleece Jacket", el.getValidePrimeiroProduto());
+		metodos.validarTexto("Sauce Labs Backpack", el.getValideSegundoProduto());
+	}
 }
